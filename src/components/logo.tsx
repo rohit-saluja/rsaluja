@@ -14,12 +14,11 @@ export function Logo({ className }: { className?: string }) {
     >
       <span
         aria-hidden
-        className="grid h-8 w-8 place-items-center rounded-lg text-sm font-bold text-white shadow-sm"
-        style={{ backgroundImage: "linear-gradient(135deg, #6366f1, #4f46e5)" }}
+        className="grid h-8 w-8 place-items-center rounded-lg bg-foreground font-display text-sm font-bold text-background transition-transform duration-200 group-hover:-rotate-6"
       >
         r
       </span>
-      <span className="text-base font-semibold tracking-tight text-foreground">
+      <span className="font-display text-base font-semibold tracking-tight text-foreground">
         {site.name}
       </span>
     </Link>

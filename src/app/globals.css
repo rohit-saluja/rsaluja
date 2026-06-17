@@ -1,36 +1,40 @@
 @import "tailwindcss";
 
-/* Enable class-based dark mode (driven by next-themes adding `.dark` on <html>). */
+/* Class-based dark mode (next-themes adds `.dark` on <html>). */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Light theme (default) */
+/* Light — monochrome neutrals + blue accent (Portfolio / Swiss minimalism). */
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0b;
+  --background: #fafafa;
+  --foreground: #09090b;
   --card: #ffffff;
-  --card-foreground: #0a0a0b;
-  --muted: #f4f4f5;
+  --card-foreground: #09090b;
+  --subtle: #f4f4f5;
+  --muted: #f0f0f2;
   --muted-foreground: #52525b;
-  --subtle: #fafafa;
   --border: #e4e4e7;
-  --accent: #4f46e5;
+  --primary: #18181b;
+  --primary-foreground: #ffffff;
+  --accent: #2563eb;
   --accent-foreground: #ffffff;
-  --ring: #4f46e5;
+  --ring: #2563eb;
 }
 
-/* Dark theme */
+/* Dark — lighter/desaturated tonal variants, not inverted hues. */
 .dark {
-  --background: #09090b;
+  --background: #0a0a0b;
   --foreground: #fafafa;
-  --card: #111114;
+  --card: #141417;
   --card-foreground: #fafafa;
-  --muted: #18181b;
+  --subtle: #101013;
+  --muted: #1d1d21;
   --muted-foreground: #a1a1aa;
-  --subtle: #0e0e11;
-  --border: #27272a;
-  --accent: #6366f1;
-  --accent-foreground: #ffffff;
-  --ring: #818cf8;
+  --border: #272729;
+  --primary: #fafafa;
+  --primary-foreground: #09090b;
+  --accent: #60a5fa;
+  --accent-foreground: #06142b;
+  --ring: #3b82f6;
 }
 
 @theme inline {
@@ -38,19 +42,21 @@
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-subtle: var(--subtle);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-subtle: var(--subtle);
   --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-space-grotesk);
 }
 
 @layer base {
-  /* Tailwind v4 defaults `border-color` to currentColor; restore a sensible default. */
+  /* Tailwind v4 defaults border-color to currentColor; restore a default. */
   * {
     border-color: var(--border);
   }
@@ -69,7 +75,17 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Display font (Space Grotesk) for headings, with tightened tracking. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), var(--font-sans), ui-sans-serif,
+      system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
   ::selection {
-    background-color: color-mix(in srgb, var(--accent) 28%, transparent);
+    background-color: color-mix(in srgb, var(--accent) 24%, transparent);
   }
 }

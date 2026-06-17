@@ -52,7 +52,7 @@ export default function HomePage() {
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
               iOS apps by {site.author}
             </span>
-            <h1 className="mt-5 max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+            <h1 className="mt-6 max-w-4xl text-balance text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               {site.tagline}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
