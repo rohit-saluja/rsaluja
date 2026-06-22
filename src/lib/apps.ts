@@ -25,6 +25,8 @@ export type AppStatus = "live" | "coming-soon";
 export type PrivacyProfile = {
   /** Collects an email / account info. */
   account: boolean;
+  /** Uses Sign in with Apple and/or Google to authenticate (name + email come from the provider). */
+  socialSignIn: boolean;
   /** Uses usage analytics (e.g. Google Analytics / Firebase). */
   analytics: boolean;
   /** Shows third-party ads (e.g. Google AdMob). */
@@ -41,6 +43,8 @@ export type PrivacyProfile = {
   purchases: boolean;
   /** Lets users create/submit content. */
   userContent: boolean;
+  /** Stores account data / user content on our servers and syncs it across the user's devices. */
+  cloudSync: boolean;
 };
 
 export type AppData = {
@@ -86,6 +90,7 @@ export const apps: AppData[] = [
     ],
     privacy: {
       account: false,
+      socialSignIn: false,
       analytics: true,
       ads: false,
       camera: false,
@@ -94,6 +99,7 @@ export const apps: AppData[] = [
       health: true,
       purchases: true,
       userContent: false,
+      cloudSync: false,
     },
   },
   {
@@ -118,6 +124,7 @@ export const apps: AppData[] = [
     ],
     privacy: {
       account: true,
+      socialSignIn: false,
       analytics: true,
       ads: false,
       camera: false,
@@ -126,38 +133,42 @@ export const apps: AppData[] = [
       health: false,
       purchases: true,
       userContent: true,
+      cloudSync: false,
     },
   },
   {
     slug: "affirmations",
-    name: "Affirmations",
+    name: "Daily Affirmations - Desire",
     tagline: "A calmer, more positive mindset, daily.",
     description:
-      "Gentle daily affirmations and reminders to help you build a kinder inner voice.",
+      "Curated daily affirmations across calming themes — plus your own affirmations, favorites, and gentle reminders.",
     longDescription: [
-      "Affirmations delivers thoughtful, uplifting prompts throughout your day and lets you save the ones that resonate.",
-      "Personalize your themes, set reminders, and make a few seconds of mindfulness part of your routine.",
+      "Daily Affirmations - Desire gives you hand-written affirmations across themes like Morning, Night, Calm, Gratitude, Confidence, Self-Love, Focus, and Sleep — and lets you write your own and organize them into custom categories.",
+      "Save the lines that resonate, personalize the fonts and look, and set daily reminders at the times that suit you. Sign in with Apple or Google and your affirmations, favorites, and settings sync across your devices.",
     ],
     category: "Health & Fitness",
     status: "coming-soon",
     icon: "sparkles",
     gradient: { from: "#f43f5e", to: "#f97316" },
     features: [
-      "Daily curated affirmations",
-      "Customizable reminders",
-      "Save your favorites",
-      "Themes for different moods and goals",
+      "Curated affirmations across calming themes",
+      "Write your own affirmations and categories",
+      "Save favorites and personalize fonts & themes",
+      "Daily reminders at the times you choose",
+      "Sign in to sync across your devices",
     ],
     privacy: {
-      account: false,
-      analytics: true,
-      ads: true,
+      account: true,
+      socialSignIn: true,
+      analytics: false,
+      ads: false,
       camera: false,
       photos: false,
       aiProcessing: false,
       health: false,
       purchases: true,
-      userContent: false,
+      userContent: true,
+      cloudSync: true,
     },
   },
 ];

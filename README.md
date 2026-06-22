@@ -88,6 +88,7 @@ detail page, and tailored privacy/terms pages are generated automatically.
   features: ["…", "…"],
   privacy: {                       // these flags decide which legal sections appear
     account: false,
+    socialSignIn: false,           // Sign in with Apple / Google
     analytics: true,
     ads: false,
     camera: false,
@@ -96,13 +97,14 @@ detail page, and tailored privacy/terms pages are generated automatically.
     health: false,
     purchases: true,
     userContent: false,
+    cloudSync: false,              // stores data on our servers & syncs across devices
   },
 }
 ```
 
 Set the `privacy` flags **honestly** — they control whether sections like
-advertising, camera/photos, AI processing, accounts, or in-app purchases show up
-in that app's generated policy. To add a new icon, register it in
+advertising, camera/photos, AI processing, accounts, social sign-in, cloud sync,
+or in-app purchases show up in that app's generated policy. To add a new icon, register it in
 [`src/components/app-icon.tsx`](src/components/app-icon.tsx).
 
 ## Before you publish — things to confirm

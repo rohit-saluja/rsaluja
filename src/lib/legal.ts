@@ -34,6 +34,7 @@ export type LegalDoc = {
 /** Assume the broadest set of practices for the general, site-wide policy. */
 const GENERAL_PROFILE: PrivacyProfile = {
   account: true,
+  socialSignIn: true,
   analytics: true,
   ads: true,
   camera: true,
@@ -42,6 +43,7 @@ const GENERAL_PROFILE: PrivacyProfile = {
   health: false,
   purchases: true,
   userContent: true,
+  cloudSync: true,
 };
 
 type Ctx = {
@@ -106,7 +108,11 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
     ],
     list: compact([
       f.account &&
-        "Account information, such as an email address, that you provide voluntarily during onboarding or when you contact us.",
+        (f.socialSignIn
+          ? "Account information — your name and email address — that we receive from Apple or Google when you sign in using Sign in with Apple or Sign in with Google."
+          : "Account information, such as an email address, that you provide voluntarily during onboarding or when you contact us."),
+      f.cloudSync &&
+        `Content and settings you create or save in ${c.noun} — such as the items you add, your favorites, and your in-app preferences — which are stored on our servers so that they can sync across your devices.`,
       f.analytics &&
         "Usage and device data — such as in-app interactions, device model, operating system version, and crash diagnostics — collected to understand how the app is used and to fix problems.",
       f.ads &&
@@ -144,6 +150,8 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
     body: ["We use the information we collect to:"],
     list: compact([
       "Provide, maintain, and improve the app and its features.",
+      f.cloudSync &&
+        "Store your content and settings and sync them across the devices where you are signed in.",
       f.analytics && "Understand how the app is used so we can make it better.",
       f.ads && "Display and measure advertising.",
       "Respond to your requests, feedback, and support enquiries.",
@@ -169,6 +177,10 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
 
   // Third-party services (only list what's used)
   const tp = compact([
+    f.socialSignIn &&
+      "Identity providers — Sign in with Apple and Sign in with Google — that authenticate you and provide your name and email address when you sign in.",
+    f.cloudSync &&
+      "Cloud hosting and database providers that store and process app data on our behalf so it can sync across your devices.",
     f.analytics &&
       "Analytics providers (for example, Google Analytics or Firebase) that help us understand app usage.",
     f.ads &&
@@ -193,9 +205,13 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
   sections.push({
     id: "data-retention",
     title: "Data Retention",
-    body: [
-      `We keep personal information only for as long as necessary to provide ${c.appsRef} and for the purposes described in this policy, unless a longer period is required by law. Information stored locally on your device remains until you delete it or uninstall the app.`,
-    ],
+    body: compact([
+      f.cloudSync
+        ? `We keep personal information only for as long as necessary to provide ${c.appsRef} and for the purposes described in this policy, unless a longer period is required by law.`
+        : `We keep personal information only for as long as necessary to provide ${c.appsRef} and for the purposes described in this policy, unless a longer period is required by law. Information stored locally on your device remains until you delete it or uninstall the app.`,
+      f.cloudSync &&
+        "Your account and the content you sync are kept on our servers until you delete them or delete your account, after which they are removed from our active systems. Information cached on your device remains until you delete it or uninstall the app.",
+    ]),
   });
 
   // Your rights
@@ -207,7 +223,9 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
     ],
     list: compact([
       f.account
-        ? "You can update or delete your account information from within the app or by contacting us."
+        ? f.cloudSync
+          ? "You can delete your account at any time from within the app, which removes your account and the content you have synced from our servers. You can also contact us for help."
+          : "You can update or delete your account information from within the app or by contacting us."
         : "Where we hold information about you, you can contact us to access or delete it.",
       f.ads &&
         "You can limit ad personalization through your device's privacy settings.",
@@ -305,7 +323,9 @@ export function getTermsDoc(app?: AppData): LegalDoc {
       title: "Your Content",
       body: [
         "You may be able to create or submit content (such as notes, decks, or other materials). You keep ownership of the content you create.",
-        "You grant us a limited, worldwide, royalty-free, non-exclusive license to host, store, and display that content solely to operate and provide the app to you. You are responsible for ensuring your content does not violate any law or the rights of others.",
+        f.cloudSync
+          ? "You grant us a limited, worldwide, royalty-free, non-exclusive license to host, store, sync, and display that content across your devices solely to operate and provide the app to you. You are responsible for ensuring your content does not violate any law or the rights of others."
+          : "You grant us a limited, worldwide, royalty-free, non-exclusive license to host, store, and display that content solely to operate and provide the app to you. You are responsible for ensuring your content does not violate any law or the rights of others.",
       ],
     });
   }
