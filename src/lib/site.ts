@@ -31,7 +31,7 @@ export const site = {
    * Shown as "Last updated" on the Privacy Policy and Terms.
    * Update whenever you change the legal text.
    */
-  legalEffectiveDate: "June 22, 2026",
+  legalEffectiveDate: "June 29, 2026",
 
   /** Canonical domain + URL (used for metadata and canonical links). */
   domain: "rsaluja.com",

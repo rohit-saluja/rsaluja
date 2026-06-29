@@ -92,6 +92,13 @@ function compact(items: Array<string | false | null | undefined>): string[] {
   return items.filter((x): x is string => Boolean(x));
 }
 
+/** Joins items into a natural-language list: "a", "a and b", "a, b, and c". */
+function proseList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? "";
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
 /* ------------------------------ Privacy Policy ----------------------------- */
 
 export function getPrivacyDoc(app?: AppData): LegalDoc {
@@ -160,7 +167,18 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
     ]),
   });
 
-  // Sharing
+  // Sharing — name only the categories of provider this app actually uses.
+  const serviceProviderExamples = compact([
+    f.analytics && "analytics",
+    f.ads && "advertising",
+    f.aiProcessing && "AI processing",
+  ]);
+  const serviceProviderBullet =
+    serviceProviderExamples.length > 0
+      ? `With service providers who process data on our behalf (such as ${proseList(
+          serviceProviderExamples,
+        )} partners).`
+      : "With service providers who process data on our behalf, such as our hosting and infrastructure providers.";
   sections.push({
     id: "sharing-your-information",
     title: "Sharing Your Information",
@@ -168,7 +186,7 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
       `We do not sell your personal information. We share information only as needed to operate ${c.appsRef}:`,
     ],
     list: [
-      "With service providers who process data on our behalf (such as analytics and, where applicable, advertising and AI processing partners).",
+      serviceProviderBullet,
       "When required by law, regulation, legal process, or an enforceable government request.",
       "To protect the rights, property, or safety of our users, the public, or us.",
       "In connection with a merger, acquisition, or sale of assets — in which case we will continue to protect your information.",
@@ -229,7 +247,8 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
         : "Where we hold information about you, you can contact us to access or delete it.",
       f.ads &&
         "You can limit ad personalization through your device's privacy settings.",
-      "You can revoke permissions (such as camera or photos) at any time in your device settings.",
+      (f.camera || f.photos) &&
+        "You can revoke permissions (such as camera or photos) at any time in your device settings.",
       `You can reach us at ${site.email} to exercise any of these rights.`,
     ]),
   });
@@ -389,6 +408,24 @@ export function getTermsDoc(app?: AppData): LegalDoc {
     title: "Consent to Share Consumption Data with Apple",
     body: [
       "If you obtained the app from the Apple App Store, you agree that we may share information about your usage of the app (consumption data) with Apple to help resolve refund requests and reduce fraud, in accordance with Apple's requirements.",
+    ],
+  });
+
+  // Apple's required minimum EULA terms for apps distributed via the App Store.
+  sections.push({
+    id: "apple-app-store-terms",
+    title: "Apple App Store — Additional Terms",
+    body: [
+      "If you downloaded the app from the Apple App Store, the following additional terms apply, and you acknowledge that:",
+    ],
+    list: [
+      `These Terms are concluded between you and ${site.legalEntity} only, and not with Apple. ${site.legalEntity}, not Apple, is solely responsible for the app and its content.`,
+      "Your licence to use the app is limited to a non-transferable licence to use it on any Apple-branded device that you own or control, as permitted by the Usage Rules in the Apple Media Services Terms and Conditions.",
+      "Apple has no obligation whatsoever to furnish any maintenance or support services for the app.",
+      `If the app fails to conform to any applicable warranty, you may notify Apple, and Apple will refund the purchase price of the app to you, if any. To the maximum extent permitted by law, Apple has no other warranty obligation with respect to the app, and any other claims, losses, liabilities, damages, costs, or expenses attributable to a failure to conform to any warranty are ${site.legalEntity}'s responsibility.`,
+      `${site.legalEntity}, not Apple, is responsible for addressing any claims relating to the app, including product liability claims, any claim that the app fails to conform to any legal or regulatory requirement, claims under consumer protection or similar legislation, and claims that the app infringes a third party's intellectual property rights.`,
+      'You represent and warrant that you are not located in a country that is subject to a U.S. Government embargo or that has been designated by the U.S. Government as a "terrorist-supporting" country, and that you are not listed on any U.S. Government list of prohibited or restricted parties.',
+      "Apple and Apple's subsidiaries are third-party beneficiaries of these Terms and, upon your acceptance, will have the right to enforce these Terms against you as a third-party beneficiary.",
     ],
   });
 
