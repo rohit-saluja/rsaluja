@@ -5,12 +5,13 @@ import {
   ArrowLeft,
   Check,
   ChevronRight,
-  Download,
   FileText,
   ShieldCheck,
 } from "lucide-react";
 import { Container } from "@/components/container";
 import { AppIcon } from "@/components/app-icon";
+import { StoreHandoffScript } from "@/components/store-handoff-script";
+import { StoreLink } from "@/components/store-link";
 import { Badge, Button } from "@/components/ui";
 import { getAppBySlug, getAppSlugs } from "@/lib/apps";
 import { site } from "@/lib/site";
@@ -84,11 +85,11 @@ export default async function AppDetailPage({
             </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              {app.appStoreUrl ? (
-                <Button href={app.appStoreUrl} external size="lg">
-                  <Download size={18} />
-                  Download on the App Store
-                </Button>
+              {app.appStoreId ? (
+                <>
+                  <StoreHandoffScript />
+                  <StoreLink app={app} />
+                </>
               ) : (
                 <Button variant="secondary" size="lg" className="cursor-default">
                   Coming soon to the App Store
