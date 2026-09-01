@@ -18,6 +18,7 @@ export type AppIconKey =
   | "dumbbell"
   | "brain"
   | "sparkles"
+  | "flame"
   | "app";
 
 export type AppStatus = "live" | "coming-soon";
@@ -189,6 +190,46 @@ export const apps: AppData[] = [
       purchases: true,
       userContent: true,
       cloudSync: true,
+    },
+  },
+  {
+    slug: "recurra",
+    name: "Recurra",
+    tagline: "Everything you're paying for, on one screen.",
+    description:
+      "A subscription manager that warns you before each renewal and keeps the whole list on your iPhone — no bank login, no account.",
+    longDescription: [
+      "Recurra puts every subscription you pay for on one screen and shows what they really cost each month, amortising annual plans instead of letting them spike. Pick a service from a bundled catalogue of 252 and the price, billing cycle and cancellation route are already filled in.",
+      "Every renewal is announced twice — seven days out, while cancelling is still easy, and again the day before. Free trials get their own reminder before they convert.",
+      "Your statements never leave your phone. Screenshots, spreadsheets and PDFs are read entirely on-device using Apple's own text recognition. There is no Recurra account, no bank link and no analytics. Recurra is a one-time purchase, because paying a subscription to manage subscriptions would be a joke at your expense.",
+    ],
+    category: "Finance",
+    status: "coming-soon",
+    icon: "flame",
+    gradient: { from: "#E8A33D", to: "#B87A26" },
+    features: [
+      "Every subscription on one screen, with the real monthly total",
+      "Renewal reminders seven days out and again the day before",
+      "Screenshot and CSV import, read entirely on your device",
+      "Cancel assist, plus a ledger of what you stopped paying",
+      "One payment — never a subscription",
+    ],
+    privacy: {
+      account: false,
+      socialSignIn: false,
+      analytics: false,
+      ads: false,
+      camera: false,
+      // Screenshot import reads an image the user picks from their library.
+      photos: true,
+      // On-device Vision only — nothing is sent to a third-party model.
+      aiProcessing: false,
+      health: false,
+      purchases: true,
+      // Subscriptions the user records stay on their device; nothing is submitted.
+      userContent: false,
+      // Optional iCloud sync writes to the user's own private database, not ours.
+      cloudSync: false,
     },
   },
 ];

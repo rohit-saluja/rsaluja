@@ -1,4 +1,4 @@
-import { AppWindow, Brain, Dumbbell, Sparkles } from "lucide-react";
+import { AppWindow, Brain, Dumbbell, Flame, Sparkles } from "lucide-react";
 import type { ComponentType } from "react";
 import type { AppData, AppIconKey } from "@/lib/apps";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ const ICONS: Record<AppIconKey, IconComponent> = {
   dumbbell: Dumbbell,
   brain: Brain,
   sparkles: Sparkles,
+  flame: Flame,
   app: AppWindow,
 };
 
