@@ -57,6 +57,14 @@ export const site = {
       { label: "Help Center", href: "/help" },
       { label: "Contact", href: "/contact" },
     ],
+    Social: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/dev-rohit-saluja/",
+      },
+      { label: "X", href: "https://x.com/codewithrohit" },
+      { label: "GitHub", href: "https://github.com/rohit-saluja" },
+    ],
   },
 } as const;
 

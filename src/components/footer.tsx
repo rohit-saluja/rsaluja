@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="mt-auto border-t border-border bg-subtle">
       <Container>
-        <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-5">
           <div className="col-span-2 md:col-span-1">
             <Logo />
             <p className="mt-3 max-w-xs text-sm leading-6 text-muted-foreground">
@@ -29,12 +29,23 @@ export function Footer() {
               <ul className="mt-3 space-y-2.5">
                 {links.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.href.startsWith("http") ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

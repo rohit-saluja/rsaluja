@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   Check,
   ChevronRight,
+  ExternalLink,
   FileText,
   ShieldCheck,
 } from "lucide-react";
@@ -95,6 +96,17 @@ export default async function AppDetailPage({
                   Coming soon to the App Store
                 </Button>
               )}
+              {app.websiteUrl ? (
+                <Button
+                  href={app.websiteUrl}
+                  external
+                  variant="secondary"
+                  size="lg"
+                >
+                  Visit website
+                  <ExternalLink size={18} />
+                </Button>
+              ) : null}
             </div>
           </div>
         </Container>

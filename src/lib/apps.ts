@@ -74,6 +74,8 @@ export type AppData = {
    * segment pins everyone to one country.
    */
   appStoreUrl?: string;
+  /** Public product website, when the app also has a dedicated web presence. */
+  websiteUrl?: string;
   icon: AppIconKey;
   /** Icon tile gradient (applied via inline style, so any CSS color works). */
   gradient: { from: string; to: string };
@@ -91,7 +93,7 @@ export const apps: AppData[] = [
       "Plan workouts, log every set, and watch your strength trend upward over time.",
     longDescription: [
       "GymLedger keeps your training simple: build routines, log sets and reps as you go, and review your progress with clear charts.",
-      "Your training data lives on your device, so your log stays private and works whether or not you are online.",
+      "Sign in with Apple, Google or email to keep your workouts and progress securely synced across your iPhones.",
     ],
     category: "Health & Fitness",
     status: "live",
@@ -103,11 +105,11 @@ export const apps: AppData[] = [
       "Build and reuse custom routines",
       "Fast set-by-set logging",
       "Progress charts for every lift",
-      "Works offline — data stays on your device",
+      "Secure account sync across your iPhones",
     ],
     privacy: {
-      account: false,
-      socialSignIn: false,
+      account: true,
+      socialSignIn: true,
       analytics: true,
       ads: false,
       camera: false,
@@ -115,8 +117,8 @@ export const apps: AppData[] = [
       aiProcessing: false,
       health: true,
       purchases: true,
-      userContent: false,
-      cloudSync: false,
+      userContent: true,
+      cloudSync: true,
     },
   },
   {
@@ -131,7 +133,10 @@ export const apps: AppData[] = [
       "Your first 10 chapters are free, forever. Active Recall Plus unlocks unlimited chapters and AI card generation. There are no ads, ever.",
     ],
     category: "Education",
-    status: "coming-soon",
+    status: "live",
+    appStoreId: "6802939557",
+    appStoreUrl: "https://apps.apple.com/app/id6802939557",
+    websiteUrl: "https://activerecalling.com",
     icon: "brain",
     gradient: { from: "#8b5cf6", to: "#4f46e5" },
     features: [
