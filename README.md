@@ -119,15 +119,22 @@ These live in [`src/lib/site.ts`](src/lib/site.ts):
 
 ## Deploy
 
-`npm run build` outputs a static site to `out/`, which works on any static host:
+The site is hosted on Cloudflare Workers as static assets (free plan, no Worker
+script runs). `npm run build` outputs the site to `out/`, and `wrangler.jsonc`
+serves that folder:
 
-- **Cloudflare Pages** — Framework preset: Next.js (Static export) · Build:
-  `npm run build` · Output dir: `out`
-- **Vercel** — import the repo; it builds automatically.
-- **GitHub Pages / Netlify / S3** — serve the contents of `out/`.
+```bash
+npm run deploy   # next build && wrangler deploy
+```
 
-Point your domain (`rsaluja.com`) at the host and you're live. If you later need
-server features, remove `output: "export"` from `next.config.ts`.
+Cloudflare Workers Builds can run the same deploy on every push to `main`
+(build command `npm run build`, deploy command `npx wrangler deploy`).
+`public/_headers` sets long-lived caching for the fingerprinted `/_next/static`
+files.
+
+`out/` also works on any other static host. If you later need server features,
+remove `output: "export"` from `next.config.ts`; that would need a different
+setup on Cloudflare.
 
 ## License
 
