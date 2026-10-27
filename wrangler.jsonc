@@ -4,6 +4,15 @@
   // unlimited on Cloudflare's free plan. `npm run build` writes `out/`.
   "name": "rsaluja",
   "compatibility_date": "2026-10-27",
+  // Cloudflare creates the DNS records and certificates for these. www is
+  // redirected to the apex by a Redirect Rule on the rsaluja.com zone.
+  "routes": [
+    { "pattern": "rsaluja.com", "custom_domain": true },
+    { "pattern": "www.rsaluja.com", "custom_domain": true }
+  ],
+  // Serve only on the real domains, so no duplicate copy gets indexed.
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     "directory": "./out",
     // `/privacy` redirects to `/privacy/`, matching `trailingSlash: true`.
