@@ -295,18 +295,18 @@ export const apps: AppData[] = [
       "Scan any page and Meaningly explains the words you might not know — what they mean in that exact sentence, how to say them, and how to use them.",
     longDescription: [
       "Point your iPhone at a book, article, menu or sign. Meaningly reads the text on your device, picks out the words that are likely new to you based on your reading level, and explains each one in the context of the sentence it came from — with pronunciation, every dictionary sense, examples, synonyms and the word's origin.",
-      "Read in 25 languages and get explanations in 39. Search any word, keep favorites, get a Word of the Day, and watch your vocabulary grow with streaks and levels. There's no account to create: your first 25 lookups are free, and Meaningly Pro unlocks unlimited scans and searches.",
+      "Read in 25 languages and get explanations in 39. Search any word, keep favorites, get a Word of the Day, and see your reading week at a glance. There's no account to create: Meaningly Pro starts with a 7-day free trial, then continues weekly or yearly.",
     ],
     category: "Reference",
     status: "coming-soon",
     icon: "app",
-    gradient: { from: "#0A7874", to: "#0E4F63" },
+    gradient: { from: "#FFA348", to: "#F2570C" },
     features: [
       "Explains words in the context of your sentence",
-      "Live camera scanning, photos and pasted text",
+      "Live camera scanning — tap a line or explain the whole page",
       "Pronunciation, senses, examples, synonyms and origins",
       "Read in 25 languages, explanations in 39",
-      "Word of the Day, streaks and reader levels",
+      "Word of the Day and a weekly reading summary",
       "No account — your library stays on your iPhone",
     ],
     privacy: {
@@ -315,8 +315,8 @@ export const apps: AppData[] = [
       analytics: false,
       ads: false,
       camera: true,
-      // Photos chosen with the system picker are read on-device; nothing is uploaded.
-      photos: true,
+      // Scanning is the live camera only; the photo library is never accessed.
+      photos: false,
       // Recognised text (never the image) is sent to OpenAI to write the explanations.
       aiProcessing: true,
       health: false,
