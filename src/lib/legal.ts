@@ -12,7 +12,7 @@
  * sure it matches what each app actually does.
  */
 import { site } from "./site";
-import type { AppData, PrivacyProfile } from "./apps";
+import type { AppData, AppLegalExtras, PrivacyProfile } from "./apps";
 
 export type LegalSection = {
   id: string;
@@ -61,7 +61,22 @@ type Ctx = {
   /** "Some of our apps" framing helper for site scope. */
   someApps: string;
   flags: PrivacyProfile;
+  /** The named AI provider, or a generic example for the site-wide policy. */
+  aiProvider: string;
+  /** Images are read on-device; only extracted text reaches the AI provider. */
+  aiTextOnly: boolean;
+  /** What the named AI provider receives ("the content you submit …"). */
+  aiInput: string;
+  /** A named subscription-management service, if the app uses one. */
+  subscriptionService?: string;
+  /** App-specific additions (empty for the site-wide documents and most apps). */
+  extras: AppLegalExtras;
+  /** "Last updated" date shown on the document. */
+  effectiveDate: string;
 };
+
+const DEFAULT_AI_INPUT =
+  "the content you submit (such as text you scan, paste or search for)";
 
 function contextFor(app?: AppData): Ctx {
   if (app) {
@@ -74,6 +89,12 @@ function contextFor(app?: AppData): Ctx {
       appsRef: app.name,
       someApps: app.name,
       flags: app.privacy,
+      aiProvider: app.processors?.ai ?? "Google Gemini",
+      aiTextOnly: app.processors?.aiReceivesTextOnly ?? false,
+      aiInput: app.processors?.aiInput ?? DEFAULT_AI_INPUT,
+      subscriptionService: app.processors?.subscriptions,
+      extras: app.legal ?? {},
+      effectiveDate: app.legal?.effectiveDate ?? site.legalEffectiveDate,
     };
   }
   return {
@@ -85,6 +106,11 @@ function contextFor(app?: AppData): Ctx {
     appsRef: "our apps and services",
     someApps: "Some of our apps",
     flags: GENERAL_PROFILE,
+    aiProvider: "Google Gemini or OpenAI",
+    aiTextOnly: false,
+    aiInput: DEFAULT_AI_INPUT,
+    extras: {},
+    effectiveDate: site.legalEffectiveDate,
   };
 }
 
@@ -104,6 +130,7 @@ function proseList(items: string[]): string {
 export function getPrivacyDoc(app?: AppData): LegalDoc {
   const c = contextFor(app);
   const f = c.flags;
+  const x = c.extras;
   const sections: LegalSection[] = [];
 
   // Information We Collect
@@ -128,9 +155,13 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
         "Photos or images that you explicitly choose to provide for features that need them (see the section on visual data below).",
       f.health &&
         "Health and fitness information that you enter, such as workouts, sets, or related metrics. This stays on your device unless you choose to back it up or sync it.",
+      ...(x.collect ?? []),
       "Information you send us directly, such as the contents of support emails and feedback.",
     ]),
   });
+
+  // App-specific sections (e.g. a keyboard extension), right after what we collect.
+  sections.push(...(x.privacySections ?? []));
 
   // Photos / visual data (only when relevant)
   if (f.camera || f.photos) {
@@ -144,7 +175,9 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
             : "add images within the app"
         }.`,
         f.aiProcessing &&
-          "To provide these features, images may be sent to third-party AI providers (for example, Google Gemini) for processing. They are used only to produce the result you asked for and are not used for facial recognition.",
+          (c.aiTextOnly
+            ? `Text in your images is recognised on your device. Only that recognised text — never the image itself — is sent, through our server (which does not keep it), to ${c.aiProvider} to produce the result you asked for.`
+            : `To provide these features, images may be sent to third-party AI providers (for example, ${c.aiProvider}) for processing. They are used only to produce the result you asked for and are not used for facial recognition.`),
         "Images are stored on your device and can be removed at any time from within the app or your device settings. You can revoke camera and photo permissions whenever you like in your device's privacy settings.",
       ]),
     });
@@ -161,6 +194,7 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
         "Store your content and settings and sync them across the devices where you are signed in.",
       f.analytics && "Understand how the app is used so we can make it better.",
       f.ads && "Display and measure advertising.",
+      ...(x.uses ?? []),
       "Respond to your requests, feedback, and support enquiries.",
       "Detect, prevent, and address technical issues, fraud, or abuse.",
       "Comply with our legal obligations.",
@@ -204,9 +238,15 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
     f.ads &&
       "Advertising providers (for example, Google AdMob) that deliver and measure ads.",
     f.aiProcessing &&
-      "AI processing providers (for example, Google Gemini) that process content you submit to power certain features.",
+      (c.isApp && c.aiProvider
+        ? `${c.aiProvider}, which processes ${c.aiInput} to power the app's AI features. It is used only to produce the result you asked for.`
+        : `AI processing providers (for example, ${c.aiProvider}) that process content you submit to power certain features.`),
     f.purchases &&
       "App stores (Apple App Store, and Google Play where applicable) that process purchases and subscriptions.",
+    f.purchases &&
+      c.subscriptionService &&
+      `${c.subscriptionService}, which records your subscription status under an anonymous identifier so your purchase is recognised across reinstalls and devices.`,
+    ...(x.thirdParties ?? []),
   ]);
   if (tp.length > 0) {
     sections.push({
@@ -229,6 +269,7 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
         : `We keep personal information only for as long as necessary to provide ${c.appsRef} and for the purposes described in this policy, unless a longer period is required by law. Information stored locally on your device remains until you delete it or uninstall the app.`,
       f.cloudSync &&
         "Your account and the content you sync are kept on our servers until you delete them or delete your account, after which they are removed from our active systems. Information cached on your device remains until you delete it or uninstall the app.",
+      ...(x.retention ?? []),
     ]),
   });
 
@@ -249,6 +290,7 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
         "You can limit ad personalization through your device's privacy settings.",
       (f.camera || f.photos) &&
         "You can revoke permissions (such as camera or photos) at any time in your device settings.",
+      ...(x.rights ?? []),
       `You can reach us at ${site.email} to exercise any of these rights.`,
     ]),
   });
@@ -293,7 +335,7 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
     kind: "privacy",
     title: "Privacy Policy",
     appliesTo: c.appliesTo,
-    effectiveDate: site.legalEffectiveDate,
+    effectiveDate: c.effectiveDate,
     intro: [
       c.isApp
         ? `This Privacy Policy explains how ${site.legalEntity} ("we", "us", or "our") handles your information in ${c.appsRef}.`
@@ -309,6 +351,7 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
 export function getTermsDoc(app?: AppData): LegalDoc {
   const c = contextFor(app);
   const f = c.flags;
+  const x = c.extras;
   const sections: LegalSection[] = [];
 
   sections.push({
@@ -323,8 +366,12 @@ export function getTermsDoc(app?: AppData): LegalDoc {
       "Attempt to gain unauthorized access to the app, our systems, or other users' data.",
       "Introduce malware or otherwise interfere with the app's normal operation.",
       "Reverse engineer, resell, or commercially exploit the app except as permitted by law.",
+      ...(x.prohibitedUses ?? []),
     ],
   });
+
+  // App-specific sections (e.g. AI output, usage allowances).
+  sections.push(...(x.termsSections ?? []));
 
   if (f.account) {
     sections.push({
@@ -353,7 +400,7 @@ export function getTermsDoc(app?: AppData): LegalDoc {
     sections.push({
       id: "purchases-and-refunds",
       title: "Purchases, Subscriptions, and Refunds",
-      body: [
+      body: x.purchaseTerms ?? [
         "The app may offer one-time purchases or subscriptions. Prices and what is included are shown before you buy. Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period, and you can manage or cancel them in your device's account settings.",
         "Purchases are processed by the relevant app store, and refunds are handled under that store's policies: refunds for purchases on the Apple App Store are subject to Apple's procedures, and refunds on Google Play (where applicable) are subject to Google's policies.",
       ],
@@ -465,7 +512,7 @@ export function getTermsDoc(app?: AppData): LegalDoc {
     kind: "terms",
     title: "Terms & Conditions",
     appliesTo: c.appliesTo,
-    effectiveDate: site.legalEffectiveDate,
+    effectiveDate: c.effectiveDate,
     intro: [
       c.isApp
         ? `These Terms & Conditions ("Terms") govern your use of ${c.appsRef}. Please read them carefully.`
