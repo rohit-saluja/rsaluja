@@ -585,6 +585,76 @@ export const apps: AppData[] = [
       ],
     },
   },
+  {
+    slug: "ledgerly",
+    name: "Ledgerly",
+    tagline: "Know what's safe to spend today.",
+    description:
+      "An expense tracker that tells you what you can safely spend today, logs a purchase from a single sentence, and keeps every number on your iPhone.",
+    longDescription: [
+      "Ledgerly opens on one number: what's safe to spend today, worked out from your monthly budget, what you've already spent and the bills still to come. Type “lunch 250 yesterday card” and the amount, date, category and account are filled in for you — or use the built-in calculator keypad.",
+      "Budgets, savings goals, recurring bills, multiple accounts and transfers are all included. Insights chart where your money goes, compare it with last month and point out patterns worth knowing. Receipts are read on your device with Apple's text recognition, and there is no account, no bank login, no ads and no tracking.",
+    ],
+    category: "Finance",
+    status: "coming-soon",
+    icon: "app",
+    gradient: { from: "#6B61FA", to: "#4033CC" },
+    features: [
+      "Safe-to-spend today, after upcoming bills",
+      "Log by typing a sentence, or with a calculator keypad",
+      "Budgets, savings goals, recurring transactions and transfers",
+      "Insights, a spending calendar and month-over-month trends",
+      "On-device receipt scanning, Face ID lock and CSV export",
+      "Available in English, Hindi, Spanish, French, German and Japanese",
+    ],
+    privacy: {
+      account: false,
+      socialSignIn: false,
+      analytics: false,
+      ads: false,
+      camera: false,
+      // Receipt scanning reads a photo the user picks from their library.
+      photos: true,
+      // Receipt text is recognised on-device with Apple's Vision framework; nothing is sent to an AI provider.
+      aiProcessing: false,
+      health: false,
+      purchases: false,
+      // Transactions stay on the device; nothing is published or shared.
+      userContent: false,
+      cloudSync: false,
+    },
+    legal: {
+      effectiveDate: "November 16, 2026",
+      collect: [
+        "The transactions, budgets, savings goals, accounts and categories you enter. They are stored only on your device and are never sent to us.",
+        "Receipt photos you choose to attach. Text on the receipt is recognised on your device to find the total; the photo is stored with the transaction on your device and is never uploaded.",
+      ],
+      privacySections: [
+        {
+          id: "on-device-finance-data",
+          title: "Your Financial Data Stays on Your Device",
+          body: [
+            "Ledgerly does not connect to your bank, does not ask for account numbers or card details, and has no server that receives your data.",
+          ],
+          list: [
+            "Amounts, categories, notes and balances are kept in the app's private storage on your iPhone.",
+            "When you type a description such as “lunch 250 yesterday”, it is interpreted entirely on your device.",
+            "If you turn on the app lock, Face ID, Touch ID or your passcode is checked by iOS. Ledgerly never receives your biometric data.",
+            "If you export a CSV file, it is created on your device and shared only where you choose to send it.",
+          ],
+        },
+      ],
+      uses: [
+        "Show your balances, budgets, insights and safe-to-spend figure, all calculated on your device.",
+      ],
+      retention: [
+        "Your data stays on your device until you delete it, use “Erase all data” in the app's settings, or delete the app.",
+      ],
+      prohibitedUses: [
+        "Rely on Ledgerly as a substitute for professional financial, tax or legal advice. Figures such as “safe to spend” are estimates based only on what you enter.",
+      ],
+    },
+  },
 ];
 
 export function getAllApps(): AppData[] {
