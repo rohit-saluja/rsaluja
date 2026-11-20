@@ -186,7 +186,7 @@ export const apps: AppData[] = [
     longDescription: [
       "Active Recall is built on the two study techniques with the strongest evidence behind them: retrieval practice and spacing. Reviews are scheduled by FSRS, a modern spaced-repetition algorithm that models how your memory for each card decays and learns from your own review history, rather than using fixed intervals.",
       "Make cards by hand in a fast, keyboard-first editor, or hand it a page of notes, a PDF or a photo and let it draft the deck for you. Sign in with Apple or Google and your decks, streak and review history follow you to any device.",
-      "Your first 10 chapters are free, forever. Active Recall Plus unlocks unlimited chapters and AI card generation. There are no ads, ever.",
+      "Active Recall Plus unlocks the whole app, AI card generation included, and starts with a 3-day free trial. There are no ads, ever.",
     ],
     category: "Education",
     status: "live",
