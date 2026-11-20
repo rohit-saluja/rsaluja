@@ -129,6 +129,12 @@ export type AppData = {
     aiInput?: string;
     /** A subscription-management service, e.g. "RevenueCat". */
     subscriptions?: string;
+    /**
+     * Named analytics and diagnostics services, one "Third-Party Services"
+     * bullet each, replacing the generic "for example, Google Analytics"
+     * line. Only used when `privacy.analytics` is true.
+     */
+    analytics?: string[];
   };
   /** App-specific additions to the generated legal documents. */
   legal?: AppLegalExtras;
@@ -199,7 +205,7 @@ export const apps: AppData[] = [
     privacy: {
       account: true,
       socialSignIn: true,
-      analytics: false,
+      analytics: true,
       ads: false,
       camera: false,
       photos: true,
@@ -208,6 +214,18 @@ export const apps: AppData[] = [
       purchases: true,
       userContent: true,
       cloudSync: true,
+    },
+    processors: {
+      ai: "OpenAI",
+      aiInput: "the text, photos and files you add when you create cards with AI",
+      subscriptions: "RevenueCat",
+      analytics: [
+        "PostHog, which records how the app is used — such as which screens and features you open — under your account identifier, so we can improve it. It never receives the content of your decks or cards.",
+        "Sentry, which receives crash reports and performance diagnostics — such as device model, operating system version and what the app was doing when a problem occurred — under an anonymous identifier that is not linked to you, so we can fix problems.",
+      ],
+    },
+    legal: {
+      effectiveDate: "November 20, 2026",
     },
   },
   {

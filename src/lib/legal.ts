@@ -69,6 +69,8 @@ type Ctx = {
   aiInput: string;
   /** A named subscription-management service, if the app uses one. */
   subscriptionService?: string;
+  /** Named analytics/diagnostics services, replacing the generic example line. */
+  analyticsServices?: string[];
   /** App-specific additions (empty for the site-wide documents and most apps). */
   extras: AppLegalExtras;
   /** "Last updated" date shown on the document. */
@@ -93,6 +95,7 @@ function contextFor(app?: AppData): Ctx {
       aiTextOnly: app.processors?.aiReceivesTextOnly ?? false,
       aiInput: app.processors?.aiInput ?? DEFAULT_AI_INPUT,
       subscriptionService: app.processors?.subscriptions,
+      analyticsServices: app.processors?.analytics,
       extras: app.legal ?? {},
       effectiveDate: app.legal?.effectiveDate ?? site.legalEffectiveDate,
     };
@@ -233,8 +236,11 @@ export function getPrivacyDoc(app?: AppData): LegalDoc {
       "Identity providers — Sign in with Apple and Sign in with Google — that authenticate you and provide your name and email address when you sign in.",
     f.cloudSync &&
       "Cloud hosting and database providers that store and process app data on our behalf so it can sync across your devices.",
-    f.analytics &&
-      "Analytics providers (for example, Google Analytics or Firebase) that help us understand app usage.",
+    ...(f.analytics
+      ? (c.analyticsServices ?? [
+          "Analytics providers (for example, Google Analytics or Firebase) that help us understand app usage.",
+        ])
+      : []),
     f.ads &&
       "Advertising providers (for example, Google AdMob) that deliver and measure ads.",
     f.aiProcessing &&
